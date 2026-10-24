@@ -2327,3 +2327,196 @@ li {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+
+/* Responsive Grid Layout */
+.skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Card Styling with Dark Overlay */
+.skill-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background-image: var(--card-bg);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Glassmorphism Overlay for readability */
+.skill-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.85); /* Dark blue/black tint */
+    backdrop-filter: blur(4px);
+    transition: background 0.4s ease;
+}
+
+/* Card Hover Effects */
+.skill-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 123, 255, 0.2);
+    border-color: rgba(0, 123, 255, 0.4);
+}
+
+.skill-card:hover::before {
+    background: rgba(15, 23, 42, 0.75); /* Slightly brightens on hover */
+}
+
+/* Content Container */
+.skill-info {
+    position: relative; /* Keeps text above the overlay */
+    z-index: 1;
+    padding: 2rem;
+}
+
+.skill-info h3 {
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.8rem;
+}
+
+.skill-info h3 i {
+    color: #007bff; /* Primary brand color */
+}
+
+/* Pill-shaped Skill Tags */
+.skill-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tech span {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+/* Tag Hover Effects */
+.skill-tech span:hover {
+    background: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+
+/* About Me Narrative Frame */
+.about-narrative-frame {
+    position: relative;
+    background: rgba(15, 23, 42, 0.6); /* Dark glass background */
+    backdrop-filter: blur(8px);
+    border-left: 4px solid #007bff; /* Primary accent color */
+    border-radius: 0 16px 16px 0;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.about-narrative-frame:hover {
+    transform: translateX(5px); /* Gentle slide right on hover */
+    box-shadow: 0 12px 40px rgba(0, 123, 255, 0.15); /* Soft blue glow */
+}
+
+/* Typography inside the frame */
+.about-narrative-frame .lead-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.about-narrative-frame p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+}
+
+/* Personal note styling at the bottom */
+.about-narrative-frame .personal-note {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-style: italic;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.about-narrative-frame .personal-note i {
+    color: #007bff;
+    font-size: 1.2rem;
+}
+
+
+
+/* ===================== */
+/* CUSTOM CURSOR         */
+/* ===================== */
+
+/* Hide default cursor globally on non-touch devices */
+@media (pointer: fine) {
+    body, a, button, input, textarea, .project-card, .skill-card {
+        cursor: none !important;
+    }
+}
+
+.cursor-dot,
+.cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none; /* Prevents the cursor from blocking clicks */
+}
+
+/* The solid center dot */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #007bff; /* Matches your primary theme */
+}
+
+/* The trailing outer ring */
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 123, 255, 0.5);
+    transition: width 0.2s ease-out, height 0.2s ease-out, background-color 0.2s ease-out;
+}
+
+/* The hover state when hovering over links and buttons */
+.cursor-outline.hover-effect {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 123, 255, 0.1);
+    border-color: rgba(0, 123, 255, 0.8);
+}

@@ -313,7 +313,7 @@ function createSimplifiedParticles() {
 
 // Typing effect
 const typedText = document.getElementById("typed-text");
-const words = ["Data Analyst ", "Business Analyst ", "Problem Solver "];
+const words = ["Product Analyst ", "Business Analyst ", "Problem Solver "];
 let wordIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
@@ -403,4 +403,63 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   });
+});
+
+
+
+// =====================
+// CUSTOM CURSOR TRACKER
+// =====================
+
+document.addEventListener("DOMContentLoaded", function () {
+    const cursorDot = document.querySelector(".cursor-dot");
+    const cursorOutline = document.querySelector(".cursor-outline");
+
+    // Only run on devices with a real mouse (ignore touchscreens/mobile)
+    if (cursorDot && cursorOutline && window.matchMedia("(pointer: fine)").matches) {
+        
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+        
+        // Track actual mouse position
+        window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // The inner dot follows instantly
+            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        });
+        
+        // Smooth trailing animation loop for the outline
+        const animateCursor = () => {
+            // Easing factor: lower number = slower/smoother trailing delay
+            let easing = 0.15;
+            
+            outlineX += (mouseX - outlineX) * easing;
+            outlineY += (mouseY - outlineY) * easing;
+            
+            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+            
+            requestAnimationFrame(animateCursor);
+        };
+        
+        animateCursor();
+        
+        // Add magnetic hover expansion to all interactive elements
+        const interactives = document.querySelectorAll('a, button, .btn, input, textarea, .project-card, .experience-header');
+        
+        interactives.forEach((el) => {
+            el.addEventListener("mouseenter", () => {
+                cursorOutline.classList.add("hover-effect");
+            });
+            
+            el.addEventListener("mouseleave", () => {
+                cursorOutline.classList.remove("hover-effect");
+            });
+        });
+    } else if (cursorDot && cursorOutline) {
+        // Hide completely on mobile/touch screens
+        cursorDot.style.display = 'none';
+        cursorOutline.style.display = 'none';
+    }
 });
