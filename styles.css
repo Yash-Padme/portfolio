@@ -2307,3 +2307,23 @@ li {
 }
 
 /* We will handle the open state dynamically via JavaScript for the perfect height */
+
+.view-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    font-size: 0.95rem;
+    color: #a0a0a0; /* Adjust to match your footer text color */
+    font-weight: 500;
+}
+
+.view-counter i {
+    color: #007bff; /* Matches the badge color */
+}
+
+.view-counter img {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
