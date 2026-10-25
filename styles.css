@@ -2520,3 +2520,38 @@ li {
     background-color: rgba(0, 123, 255, 0.1);
     border-color: rgba(0, 123, 255, 0.8);
 }
+
+
+/* ========================================== */
+/* MOBILE VIEW FIXES FOR ABOUT & SKILLS       */
+/* ========================================== */
+
+@media (max-width: 768px) {
+    /* 1. Force visibility: Agar JS observer fail ho jaye tab bhi content dikhega */
+    .about-text, 
+    .skills, 
+    .skill-card, 
+    .about-narrative-frame, 
+    .about-narrative-frame p {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+
+    /* 2. Grid Fix: Mobile ki chhoti screen par cards ko fit karne ke liye 1 column layout */
+    .skills {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+
+    /* 3. Render Bug Fix: Kuch mobile browsers mein blur se black screen aati hai */
+    .about-narrative-frame {
+        backdrop-filter: none !important;
+        background: rgba(15, 23, 42, 0.95) !important;
+        padding: 1.5rem !important; /* Mobile ke liye padding thodi kam ki hai */
+    }
+    
+    .skill-card::before {
+        backdrop-filter: none !important;
+    }
+}
