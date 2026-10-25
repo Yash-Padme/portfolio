@@ -1,18 +1,17 @@
 //
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Initializing experience toggle...");
-  
+
   const experienceHeaders = document.querySelectorAll(".experience-header");
 
-  experienceHeaders.forEach(header => {
+  experienceHeaders.forEach((header) => {
     header.addEventListener("click", function () {
-      
       // Toggle the 'active' class to rotate the chevron arrow
       this.classList.toggle("active");
-      
+
       // Select the sibling element (the <ul> containing the bullet points)
       const details = this.nextElementSibling;
-      
+
       // Calculate and toggle the max-height for a smooth slide-down effect
       if (details.style.maxHeight) {
         // Close the accordion
@@ -28,8 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
-
 
 // Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
@@ -73,7 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     },
     {
-      threshold: 0.2,
+      // 0.2 ki jagah 0.05 kar do, taaki section thoda sa dikhte hi load ho jaye
+      threshold: 0.05,
     },
   );
 
@@ -85,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const skills = document.querySelectorAll(".skills-list li");
 
   skills.forEach((skill, index) => {
-    skill.style.transitionDelay = `${0.1 * index}s`;
+    skill.style.transitionDelay = `${0.2 * index}s`;
   });
 
   // Simplified project cards interaction
@@ -119,17 +117,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create fewer particles for background
   createSimplifiedParticles();
 
-
-
   // =====================
-// DYNAMIC RESUME DOWNLOAD
-// =====================
+  // DYNAMIC RESUME DOWNLOAD
+  // =====================
 
-// Helper function to generate the dynamic date string (e.g., "9thAug")
-function getFormattedDate() {
+  // Helper function to generate the dynamic date string (e.g., "9thAug")
+  function getFormattedDate() {
     const date = new Date();
     const day = date.getDate();
-    const month = date.toLocaleString('default', { month: 'short' }); // Gets "Aug", "Sep", etc.
+    const month = date.toLocaleString("default", { month: "short" }); // Gets "Aug", "Sep", etc.
 
     // Determine the correct ordinal suffix (st, nd, rd, th)
     let suffix = "th";
@@ -138,46 +134,45 @@ function getFormattedDate() {
     else if (day % 10 === 3 && day !== 13) suffix = "rd";
 
     return `${day}${suffix}${month}`;
-}
+  }
 
-// Function to fetch the local PDF, rename it dynamically, and trigger download
-function downloadDynamicResume() {
+  // Function to fetch the local PDF, rename it dynamically, and trigger download
+  function downloadDynamicResume() {
     // Path to your resume in the repository
-    const pdfUrl = 'images/Portfolio.pdf'; 
+    const pdfUrl = "images/Portfolio.pdf";
     const dateString = getFormattedDate();
-    
+
     // Creates the format: YashPadme_resume_9thAug.pdf
-    const fileName = `YashPadme_resume_${dateString}.pdf`; 
+    const fileName = `YashPadme_resume_${dateString}.pdf`;
 
     // Fetch the file as a Blob to bypass naming restrictions
     fetch(pdfUrl)
-        .then(response => response.blob())
-        .then(blob => {
-            // Create a temporary object URL for the blob
-            const url = window.URL.createObjectURL(blob);
-            
-            // Create a hidden link, attach the blob, and click it programmatically
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = fileName;
-            
-            document.body.appendChild(a);
-            a.click();
-            
-            // Clean up the DOM and memory
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        })
-        .catch(error => {
-            console.error('Error downloading the resume:', error);
-            // Fallback: Just open the file in a new tab if the fetch fails
-            window.open(pdfUrl, '_blank'); 
-        });
-}
+      .then((response) => response.blob())
+      .then((blob) => {
+        // Create a temporary object URL for the blob
+        const url = window.URL.createObjectURL(blob);
 
+        // Create a hidden link, attach the blob, and click it programmatically
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = fileName;
 
-//from logic of downloadend
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up the DOM and memory
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      })
+      .catch((error) => {
+        console.error("Error downloading the resume:", error);
+        // Fallback: Just open the file in a new tab if the fetch fails
+        window.open(pdfUrl, "_blank");
+      });
+  }
+
+  //from logic of downloadend
 
   // Contact form submission with Web3Forms
   const contactForm = document.querySelector(".contact-form");
@@ -197,43 +192,41 @@ function downloadDynamicResume() {
       // yashpadme13@gmail.com pw Yash@1234
 
       fetch("https://formspree.io/f/xzddzevk", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    },
-    body: json
-})
-.then(async (response) => {
-    const result = await response.json();
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      })
+        .then(async (response) => {
+          const result = await response.json();
 
-    if (response.ok) {
-        // Updated alert to let them know the download is starting
-        alert("✅ Message sent successfully! Your resume download will start shortly.");
-        contactForm.reset();
-        
-        // 🔥 Trigger the dynamic download right here
-        downloadDynamicResume();
-    } else {
-        console.error(result);
-        alert(result.errors?.[0]?.message || "❌ Failed to send message.");
-    }
-})
+          if (response.ok) {
+            // Updated alert to let them know the download is starting
+            alert(
+              "✅ Message sent successfully! Your resume download will start shortly.",
+            );
+            contactForm.reset();
 
-.catch((error) => {
-    console.error(error);
-    alert("❌ Something went wrong!");
-})
-.finally(() => {
-    submitButton.innerHTML = originalButtonText;
-    submitButton.disabled = false;
-});
+            // 🔥 Trigger the dynamic download right here
+            downloadDynamicResume();
+          } else {
+            console.error(result);
+            alert(result.errors?.[0]?.message || "❌ Failed to send message.");
+          }
+        })
 
+        .catch((error) => {
+          console.error(error);
+          alert("❌ Something went wrong!");
+        })
+        .finally(() => {
+          submitButton.innerHTML = originalButtonText;
+          submitButton.disabled = false;
+        });
     });
   }
-
-
-
 
   // Hamburger toggle for mobile (re-added)
   const menuToggle = document.querySelector(".menu-toggle");
@@ -405,61 +398,66 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-
 // =====================
 // CUSTOM CURSOR TRACKER
 // =====================
 
 document.addEventListener("DOMContentLoaded", function () {
-    const cursorDot = document.querySelector(".cursor-dot");
-    const cursorOutline = document.querySelector(".cursor-outline");
+  const cursorDot = document.querySelector(".cursor-dot");
+  const cursorOutline = document.querySelector(".cursor-outline");
 
-    // Only run on devices with a real mouse (ignore touchscreens/mobile)
-    if (cursorDot && cursorOutline && window.matchMedia("(pointer: fine)").matches) {
-        
-        let mouseX = 0, mouseY = 0;
-        let outlineX = 0, outlineY = 0;
-        
-        // Track actual mouse position
-        window.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            // The inner dot follows instantly
-            cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-        });
-        
-        // Smooth trailing animation loop for the outline
-        const animateCursor = () => {
-            // Easing factor: lower number = slower/smoother trailing delay
-            let easing = 0.15;
-            
-            outlineX += (mouseX - outlineX) * easing;
-            outlineY += (mouseY - outlineY) * easing;
-            
-            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
-            
-            requestAnimationFrame(animateCursor);
-        };
-        
-        animateCursor();
-        
-        // Add magnetic hover expansion to all interactive elements
-        const interactives = document.querySelectorAll('a, button, .btn, input, textarea, .project-card, .experience-header');
-        
-        interactives.forEach((el) => {
-            el.addEventListener("mouseenter", () => {
-                cursorOutline.classList.add("hover-effect");
-            });
-            
-            el.addEventListener("mouseleave", () => {
-                cursorOutline.classList.remove("hover-effect");
-            });
-        });
-    } else if (cursorDot && cursorOutline) {
-        // Hide completely on mobile/touch screens
-        cursorDot.style.display = 'none';
-        cursorOutline.style.display = 'none';
-    }
+  // Only run on devices with a real mouse (ignore touchscreens/mobile)
+  if (
+    cursorDot &&
+    cursorOutline &&
+    window.matchMedia("(pointer: fine)").matches
+  ) {
+    let mouseX = 0,
+      mouseY = 0;
+    let outlineX = 0,
+      outlineY = 0;
+
+    // Track actual mouse position
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // The inner dot follows instantly
+      cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    });
+
+    // Smooth trailing animation loop for the outline
+    const animateCursor = () => {
+      // Easing factor: lower number = slower/smoother trailing delay
+      let easing = 0.15;
+
+      outlineX += (mouseX - outlineX) * easing;
+      outlineY += (mouseY - outlineY) * easing;
+
+      cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+
+      requestAnimationFrame(animateCursor);
+    };
+
+    animateCursor();
+
+    // Add magnetic hover expansion to all interactive elements
+    const interactives = document.querySelectorAll(
+      "a, button, .btn, input, textarea, .project-card, .experience-header",
+    );
+
+    interactives.forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        cursorOutline.classList.add("hover-effect");
+      });
+
+      el.addEventListener("mouseleave", () => {
+        cursorOutline.classList.remove("hover-effect");
+      });
+    });
+  } else if (cursorDot && cursorOutline) {
+    // Hide completely on mobile/touch screens
+    cursorDot.style.display = "none";
+    cursorOutline.style.display = "none";
+  }
 });
